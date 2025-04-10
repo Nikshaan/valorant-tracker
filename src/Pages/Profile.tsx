@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom"
 import axios from "axios";
 import { useEffect, useState } from "react";
+import MatchSlot from "../components/MatchSlot";
 
 interface User {
     name: string | undefined,
@@ -12,10 +13,37 @@ interface User {
     peak_rank: string,
 }
 
-const Profile: React.FC = () => {
+type ValorantPlayerData = {
+    currenttier: number;
+    currenttierpatched: string;
+    date: string;
+    date_raw: number;
+    elo: number;
+    images: {
+      large: string;
+      small: string;
+      triangle_down: string;
+      triangle_up: string;
+      [key: string]: unknown;
+    };
+    map: {
+      id: string;
+      name: string;
+      [key: string]: unknown;
+    };
+    match_id: string;
+    mmr_change_to_last_game: number;
+    ranking_in_tier: number;
+    season_id: string;
+    [key: string]: unknown;
+  }
 
+const Profile: React.FC = () => {
     const { userName, userId } = useParams<Record<string, string | undefined>>();
-    const [userData, setUserData ] = useState<User | null>(null);
+    const [ userData, setUserData ] = useState<User | null>(null);
+    const [ matchData, setMatchData ] = useState<ValorantPlayerData[] | null>(null);
+    const [ netCalc, setNetCalc ] = useState<number | string>("NET");
+    let netRR = 0; 
 
     async function fetchData(): Promise<void>{
         try{
@@ -23,6 +51,7 @@ const Profile: React.FC = () => {
             const res2 = await axios.get(`https://api.henrikdev.xyz/valorant/v3/mmr/ap/pc/${userName}/${userId}`);
             const card = await axios.get(`https://media.valorant-api.com/playercards/${res1.data.data.card}/wideart.png`);
             const title = await axios.get(`https://valorant-api.com/v1/playertitles/${res1.data.data.title}`);
+            const matches = await axios.get(`https://api.henrikdev.xyz/valorant/v1/mmr-history/ap/${userName}/${userId}`);
             
             setUserData({
                 name: userName,
@@ -33,25 +62,48 @@ const Profile: React.FC = () => {
                 curr_rank: res2.data.data.current.tier.name,
                 peak_rank: res2.data.data.peak.tier.name,
             });
-
+            setMatchData(matches?.data?.data);
         }
         catch(err){
             console.log("Error : " + err);
         }
     };
-    console.log(userData);
+    
+    if(matchData != null && netCalc == "NET"){
+        for(let i = 0; i < 5 ; i++){
+            netRR = netRR + matchData[i].mmr_change_to_last_game;
+        }
+        setNetCalc(0);
+    }
+
     useEffect(() => {
         fetchData();
     }, []);
 
-    if (userData == null){
+    if (userData == null || matchData == null || netCalc == "NET"){
         return (<div className="text-white">Loading...</div>)
     }
+    
     return (
-    <>
-        <div className="text-white">{userName} {userId}</div>
-        <img src={userData.card} />
-    </>
+    <div className="p-5">
+        <img src={userData.card} className="w-full"/>
+        <div className="text-white m-2 font-semibold">
+            <p>{userData.name}#{userData.tag}</p>
+            <p>level : {userData.level}</p>
+            <p>title : {userData.title}</p>
+            <p>current rank : {userData.curr_rank}</p>
+            <p>peak rank : {userData.peak_rank}</p>
+        </div>
+        <div className={`${netRR > 0 ? "bg-green-900" : `${netRR < 0 ? "bg-red-900" : "bg-gray-400"}`} bg-gray-500 border-2 border-white p-2 text-white rounded-xl font-bold`}>
+            <p>Net RR since past 5 matches : {netCalc}</p>
+        </div>
+        <div className="w-full h-1 bg-white my-5" />  
+        {
+            matchData.map((match) => (
+                <MatchSlot key={match.match_id} matchData = {match}/>
+            ))
+        }
+    </div>
   )
 }
 
