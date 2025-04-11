@@ -43,6 +43,7 @@ const Profile: React.FC = () => {
     const [ userData, setUserData ] = useState<User | null>(null);
     const [ matchData, setMatchData ] = useState<ValorantPlayerData[] | null>(null);
     const [ netCalc, setNetCalc ] = useState<number | string>("NET");
+    const [ netColor, setNetColor ] = useState<string>("bg-gray-600");
     let netRR = 0; 
 
     async function fetchData(): Promise<void>{
@@ -73,7 +74,13 @@ const Profile: React.FC = () => {
         for(let i = 0; i < 5 ; i++){
             netRR = netRR + matchData[i].mmr_change_to_last_game;
         }
-        setNetCalc(0);
+
+        if(netRR > 0){
+            setNetColor("bg-green-900");
+        } else if (netRR < 0){
+            setNetColor("bg-red-900");
+        }
+        setNetCalc(netRR);
     }
 
     useEffect(() => {
@@ -94,7 +101,7 @@ const Profile: React.FC = () => {
             <p>current rank : {userData.curr_rank}</p>
             <p>peak rank : {userData.peak_rank}</p>
         </div>
-        <div className={`${netRR > 0 ? "bg-green-900" : `${netRR < 0 ? "bg-red-900" : "bg-gray-400"}`} bg-gray-500 border-2 border-white p-2 text-white rounded-xl font-bold`}>
+        <div className={`${netColor} border-2 border-white p-2 text-white rounded-xl font-bold`}>
             <p>Net RR since past 5 matches : {netCalc}</p>
         </div>
         <div className="w-full h-1 bg-white my-5" />  

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 interface Match {
     date: string,
@@ -41,7 +42,8 @@ interface MatchCardProps {
 
 const MatchSlot: React.FC<MatchCardProps> = ({ matchData }) => {
     const [mapImg, setMapImg] = useState<string | null>(null);
-    
+    const [ deltaColor, setDeltaColor ] = useState<string>("None");
+
     const match: Match = {
         date: matchData.date,
         rank: matchData.images.small,
@@ -65,17 +67,29 @@ const MatchSlot: React.FC<MatchCardProps> = ({ matchData }) => {
             fetchMap();
         }, []);
 
-    if (mapImg == null){
+    if(matchData != null && deltaColor == "None"){
+        if(match.delta > 0){
+            setDeltaColor("bg-green-900");
+        } else if (match.delta < 0){
+            setDeltaColor("bg-red-900");
+        } else {
+            setDeltaColor("bg-gray-500")
+        }
+    }
+
+    if (mapImg == null || deltaColor == "None"){
         return (<div className="text-white">Loading...</div>)
     }
 
   return (
-    <div className={`${match.delta > 0 ? "bg-green-900":`${match.delta < 0 ? "bg-red-900" : "bg-gray-400"}`} text-left bg-gray-500 text-white border-2 p-2 m-5 cursor-pointer`}>
-    <p>Map : {match.map}</p>
-    <p>Date : {match.date}</p>
-    <p>Delta : {match.delta}</p>
-    <img src={match.rank_img} className="h-8 m-2"/>
-    <img src={mapImg} className="border-2 border-black w-full"/>
+    <div className={`${deltaColor} text-left bg-gray-500 text-white border-2 p-2 m-5 cursor-pointer`}>
+        <Link to={`/match/${match.matchId}`}>
+            <p>Map : {match.map}</p>
+            <p>Date : {match.date}</p>
+            <p>Delta : {match.delta}</p>
+            <img src={match.rank_img} className="h-8 m-2"/>
+            <img src={mapImg} className="border-2 border-black w-full"/>
+        </Link>
     </div>
   )
 }
