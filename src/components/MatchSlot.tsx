@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 interface Match {
     date: string,
     rank: string,
-    rank_img: string,
     map: string,
     matchId: string,
     delta: number,
@@ -17,6 +16,9 @@ type ValorantPlayerData = {
     date: string;
     date_raw: number;
     elo: number;
+    tier: {
+        name: string;
+    };
     images: {
       large: string;
       small: string;
@@ -30,7 +32,7 @@ type ValorantPlayerData = {
       [key: string]: unknown;
     };
     match_id: string;
-    mmr_change_to_last_game: number;
+    last_change: number;
     ranking_in_tier: number;
     season_id: string;
     [key: string]: unknown;
@@ -46,11 +48,10 @@ const MatchSlot: React.FC<MatchCardProps> = ({ matchData }) => {
 
     const match: Match = {
         date: matchData.date,
-        rank: matchData.images.small,
-        rank_img: matchData.images.small,
+        rank: matchData.tier.name,
         map: matchData.map.name,
         matchId: matchData.match_id,
-        delta: matchData.mmr_change_to_last_game
+        delta: matchData.last_change,
     };
 
     async function fetchMap(): Promise<void>{
@@ -87,7 +88,7 @@ const MatchSlot: React.FC<MatchCardProps> = ({ matchData }) => {
             <p>Map : {match.map}</p>
             <p>Date : {match.date}</p>
             <p>Delta : {match.delta}</p>
-            <img src={match.rank_img} className="h-8 m-2"/>
+            <p>Rank : {match.rank}</p>
             <img src={mapImg} className="border-2 border-black w-full"/>
         </Link>
     </div>

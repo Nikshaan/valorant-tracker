@@ -19,6 +19,9 @@ type ValorantPlayerData = {
     date: string;
     date_raw: number;
     elo: number;
+    tier: {
+        name: string;
+    };
     images: {
       large: string;
       small: string;
@@ -32,7 +35,7 @@ type ValorantPlayerData = {
       [key: string]: unknown;
     };
     match_id: string;
-    mmr_change_to_last_game: number;
+    last_change: number;
     ranking_in_tier: number;
     season_id: string;
     [key: string]: unknown;
@@ -52,7 +55,7 @@ const Profile: React.FC = () => {
             const res2 = await axios.get(`https://api.henrikdev.xyz/valorant/v3/mmr/ap/pc/${userName}/${userId}`);
             const card = await axios.get(`https://media.valorant-api.com/playercards/${res1.data.data.card}/wideart.png`);
             const title = await axios.get(`https://valorant-api.com/v1/playertitles/${res1.data.data.title}`);
-            const matches = await axios.get(`https://api.henrikdev.xyz/valorant/v1/mmr-history/ap/${userName}/${userId}`);
+            const matches = await axios.get(`https://api.henrikdev.xyz/valorant/v2/mmr-history/ap/pc/tabaahi/tabah`);
             
             setUserData({
                 name: userName,
@@ -63,16 +66,16 @@ const Profile: React.FC = () => {
                 curr_rank: res2.data.data.current.tier.name,
                 peak_rank: res2.data.data.peak.tier.name,
             });
-            setMatchData(matches?.data?.data);
+            setMatchData(matches?.data?.data?.history);
         }
         catch(err){
             console.log("Error : " + err);
         }
     };
-    
+
     if(matchData != null && netCalc == "NET"){
         for(let i = 0; i < 5 ; i++){
-            netRR = netRR + matchData[i].mmr_change_to_last_game;
+            netRR = netRR + matchData[i].last_change;
         }
 
         if(netRR > 0){

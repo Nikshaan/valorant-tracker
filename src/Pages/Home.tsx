@@ -29,11 +29,6 @@ const Home : React.FC = () => {
 
   return (
     <div className="text-white h-[100svh] bg-gray-700 relative flex flex-col items-center">
-      <div className="bg-red-900 border-2 w-full flex justify-center items-center gap-5 h-16 sticky top-0 left-0 right-0">
-        <p>HOME</p>
-        <p>GANG</p>
-      </div>
-
       <div className="m-auto bg-gray-400 px-2 border-2">
         <form onSubmit={handleSubmit}>
             <input type="text"  value={userInput} onChange={(e) => {setUserInput(e.target.value)}} className="py-1 px-4 border-2 border-black bg-gray-500" placeholder="Enter player name#id : "/>

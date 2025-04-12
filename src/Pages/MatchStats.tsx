@@ -1,23 +1,109 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
+import PlayerSlot from '../components/PlayerSlot';
 
 /*
 TODO:
-link to profile
-types declare
-sort by score
-baiter
-mvp
-rank progress bar at matchslots pages
-each agent photo + ability data
+types declare players*
+baiter***
+rank progress bar at matchslots pages***
+gang*****
+go through apis again
+optimization // images
 */
+
+interface MatchDetails {
+    score: Score[],
+    rounds: Round[],
+    players: Players[],
+    kills: object[],
+}
+
+interface Score {
+    team_id: string,
+    rounds: {
+        won: number,
+        lost: number,
+        [key: string]: unknown,
+    }
+}
+
+interface Players {
+    ability_casts: {
+        ability1: number;
+        ability2: number;
+        grenade: number;
+        ultimate: number;
+    };
+    account_level: number;
+    agent: {
+        id: string;
+        name: string;
+    };
+    behavior: {
+        afk_rounds: number;
+        friendly_fire: {
+        incoming: number;
+        outgoing: number;
+        };
+        rounds_in_spawn: number;
+    };
+    customization: {
+        card: string;
+        preferred_level_border: string;
+        title: string;
+    };
+    economy: {
+        loadout_value: {
+        average: number;
+        overall: number;
+        };
+        spent: {
+        average: number;
+        overall: number;
+        };
+    };
+    name: string;
+    party_id: string;
+    platform: string;
+    puuid: string;
+    session_playtime_in_ms: number;
+    stats: {
+        assists: number;
+        bodyshots: number;
+        damage: {
+        dealt: number;
+        received: number;
+        };
+        deaths: number;
+        headshots: number;
+        kills: number;
+        legshots: number;
+        score: number;
+    };
+    tag: string;
+    team_id: string;
+    tier: {
+        id: number;
+        name: string;
+    };  
+}
+
+interface Round {
+    id: number,
+    result: string | null,
+    plant: {
+        site: string | null
+    } | null,
+    winning_team: string
+}
 
 const MatchStats: React.FC = () => {
     const { matchId } = useParams<Record<string, string | undefined>>();
-    const [ matchDetails, setMatchDetails ] = useState<object | null>(null);
-    const playersBlue: object[] = [];
-    const playersRed: object[] = [];
+    const [ matchDetails, setMatchDetails ] = useState<MatchDetails | null>(null);
+    const playersBlue: Players[] = [];
+    const playersRed: Players[] = [];
     //const alive_time: {[id: string]: number} = {}; 
 
     async function fetchMatchData(): Promise<void>{
@@ -43,6 +129,8 @@ const MatchStats: React.FC = () => {
                 playersRed.push(matchDetails.players[i]);
             }
         }
+        playersBlue.sort((a, b) => b.stats.score - a.stats.score);
+        playersRed.sort((a, b) => b.stats.score - a.stats.score);
         //console.log(playersBlue, playersRed);
     }
 
@@ -73,7 +161,6 @@ const MatchStats: React.FC = () => {
         }
     }*/
 
-    //console.log(matchDetails);
     useEffect(() => {
             fetchMatchData();
         }, []);
@@ -97,29 +184,17 @@ const MatchStats: React.FC = () => {
         <div className='bg-red-400 w-full p-2'>
             {
             playersRed.map((player)=>
-                <div key={player.puuid} className='m-1 flex-col flex p-2 border-2'>
-                    <div className='flex justify-between'>
-                        <p className='text-nowrap'>{player.name}#{player.tag}</p>
-                        <p>lvl: {player.account_level}</p>
-                        <p>score: {player.stats.score}</p>
-                        <p>rank: {player.tier.name}</p>
-                    </div>
-                </div>
-                )
+            (
+                <PlayerSlot player = {player} key={player.puuid} />   
+            ))
             }
         </div>
         <div className='bg-blue-400 w-full p-2'>
             {
                 playersBlue.map((player)=>
-                <div key={player.puuid} className='m-1 flex-col flex p-2 border-2'>
-                    <div className='flex justify-between'>
-                        <p className='text-nowrap'>{player.name}#{player.tag}</p>
-                        <p>lvl: {player.account_level}</p>
-                        <p>score: {player.stats.score}</p>
-                        <p>rank: {player.tier.name}</p>
-                    </div>
-                </div>
-                )
+                (
+                <PlayerSlot player = {player} key={player.puuid} />   
+            ))
             }
         </div>
     </div>
