@@ -118,7 +118,7 @@ const PlayerSlot: React.FC<Player> = ({player}) => {
             console.log("Error : " + err)
         }
     };
-    console.log(player)
+
     useEffect(() => {
         fetchAgentData();
     }, []);

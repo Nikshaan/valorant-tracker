@@ -1,6 +1,7 @@
 import axios from "axios";
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+const apiKey = import.meta.env.VITE_API_KEY;
 
 const Home : React.FC = () => {
 
@@ -15,7 +16,7 @@ const Home : React.FC = () => {
         const user = userData.split('#');
        
         try{
-            const res = await axios.get(`https://api.henrikdev.xyz/valorant/v2/account/${user[0]}/${user[1]}`);
+            const res = await axios.get(`https://api.henrikdev.xyz/valorant/v2/account/${user[0]}/${user[1]}?api_key=${apiKey}`);
             if (res.data.status === 200){
                 navigate(`profile/${user[0]}/${user[1]}`);
             }

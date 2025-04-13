@@ -2,22 +2,22 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import PlayerSlot from '../components/PlayerSlot';
+const apiKey = import.meta.env.VITE_API_KEY;
 
 /*
 TODO:
-types declare players*
-baiter***
 rank progress bar at matchslots pages***
 gang*****
 go through apis again
 optimization // images
+date
 */
 
 interface MatchDetails {
     score: Score[],
     rounds: Round[],
     players: Players[],
-    kills: object[],
+    kills: Kills[],
 }
 
 interface Score {
@@ -90,6 +90,15 @@ interface Players {
     };  
 }
 
+interface Kills {
+    round: number,
+    victim: {
+        name: string,
+        puuid: string,
+        team: string,
+    }
+}
+
 interface Round {
     id: number,
     result: string | null,
@@ -102,13 +111,14 @@ interface Round {
 const MatchStats: React.FC = () => {
     const { matchId } = useParams<Record<string, string | undefined>>();
     const [ matchDetails, setMatchDetails ] = useState<MatchDetails | null>(null);
+    const [ baiter, setBaiter ] = useState<string | null>(null);
     const playersBlue: Players[] = [];
     const playersRed: Players[] = [];
-    //const alive_time: {[id: string]: number} = {}; 
-
+    const alive = new Map<string, number>(); 
+    
     async function fetchMatchData(): Promise<void>{
         try{
-            const res = await axios.get(`https://api.henrikdev.xyz/valorant/v4/match/ap/${matchId}`);
+            const res = await axios.get(`https://api.henrikdev.xyz/valorant/v4/match/ap/${matchId}?api_key=${apiKey}`);
             setMatchDetails({
                 score: res.data.data.teams,
                 rounds: res.data.data.rounds,
@@ -121,6 +131,20 @@ const MatchStats: React.FC = () => {
         }
     };
 
+    function getKeyWithMaxValue<K>(map: Map<K, number>): K | null {
+        let maxKey = null;
+        let maxValue = -Infinity;
+        
+        map.forEach((value, key) => {
+        if (value > maxValue) {
+            maxValue = value;
+            maxKey = key;
+        }
+    });
+        
+        return maxKey;
+      }
+
     if(matchDetails != null && playersBlue.length == 0 && playersRed.length == 0){
         for(let i = 0; i < 10; i++){
             if(matchDetails.players[i].team_id == "Blue"){
@@ -131,41 +155,67 @@ const MatchStats: React.FC = () => {
         }
         playersBlue.sort((a, b) => b.stats.score - a.stats.score);
         playersRed.sort((a, b) => b.stats.score - a.stats.score);
-        //console.log(playersBlue, playersRed);
     }
 
-    /*if(matchDetails != null){
+    if(matchDetails != null && baiter == null){
         let j = 0;
-        let vic_blue = 0;
-        let vic_red = 0;
+        let roundCheck1 = Infinity;
+        let roundCheck2 = Infinity;
 
-        while(j < matchDetails.kills.length; j++){
-            let round_no = matchDetails.kills[j].round;
-            let copyRed = playersRed.slice();
-            let copyBlue = playersBlue.slice();
+        while(j < matchDetails.kills.length){
+            const round_no = matchDetails.kills[j].round;
+            let copyRed = [playersRed[0].puuid, playersRed[1].puuid, playersRed[2].puuid, playersRed[3].puuid, playersRed[4].puuid];
+            let copyBlue = [playersBlue[0].puuid, playersBlue[1].puuid, playersBlue[2].puuid, playersBlue[3].puuid, playersBlue[4].puuid];
+            let vic_blue = 0;
+            let vic_red = 0;
 
-            while(matchDetails.kill[j].round == round){
-                let victim_team = matchDetails.kill[j].victim.team;
+            while(matchDetails.kills[j]?.round == round_no){
+                const victim_team = matchDetails.kills[j].victim.team;
+
                 if(victim_team == "Blue"){
                     vic_blue += 1;
-                    copyBlue.pop(matchDetails.kill[j].victim.name)
+                    copyBlue = copyBlue.filter(id => id != matchDetails.kills[j].victim.puuid);
+                    
                 } else {
                     vic_red += 1;
+                    copyRed = copyRed.filter(id => id != matchDetails.kills[j].victim.puuid);
                 }
 
-                if(vic_blue == 4){
-                    alive_time[]
+                if(vic_blue == 4 && round_no != roundCheck1){
+                    roundCheck1 = round_no;
+                    if(alive.has(copyBlue[0])){
+                        alive.set(copyBlue[0], alive.get(copyBlue[0])! + 1);
+                    } else {
+                        alive.set(copyBlue[0], 1);
+                    }
                 }
+
+                if(vic_red == 4 && round_no != roundCheck2){
+                    roundCheck2 = round_no;
+                    if(alive.has(copyRed[0])){
+                        alive.set(copyRed[0], alive.get(copyRed[0])! + 1);
+                    } else {
+                        alive.set(copyRed[0], 1);
+                    }
+                }
+
                 j += 1;
             }
         }
-    }*/
+
+        const maxBaiter: string | null = getKeyWithMaxValue(alive);
+        for(let x = 0; x < 10; x++){
+            if(matchDetails.players[x].puuid === maxBaiter){
+                setBaiter(matchDetails.players[x].name + "#" + matchDetails.players[x].tag)
+            }
+        }
+    }   
 
     useEffect(() => {
             fetchMatchData();
         }, []);
 
-    if(matchDetails == null){
+    if(matchDetails == null || baiter == null){
         return(<><p className='text-white'>Loading...</p></>)
     }
 
@@ -180,7 +230,10 @@ const MatchStats: React.FC = () => {
             { matchDetails.score[0].rounds.lost}
         </div>
     </div>
-    <div className='flex flex-col gap-1 text-center border-2 m-2'>
+    <div className='text-white flex justify-center items-center m-2'>
+        <p className='border-2 px-2 py-1'>Heavy Baiter : {baiter}</p>
+    </div>
+    <div className='flex flex-col gap-1 text-center border-2'>
         <div className='bg-red-400 w-full p-2'>
             {
             playersRed.map((player)=>
