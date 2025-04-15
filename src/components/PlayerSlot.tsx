@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
+import GunSlot from './GunSlot';
 
 interface Player {
     player: PlayerGameData,
-};
+    guns: object
+}
 
 interface PlayerGameData {
     ability_casts: {
@@ -96,8 +98,9 @@ interface PlayerData {
     agent_icon: string,
 }
 
-const PlayerSlot: React.FC<Player> = ({player}) => {
+const PlayerSlot: React.FC<Player> = ({player, guns}) => {
     const [playerData, setPlayerData] = useState<PlayerData | null>(null);
+    
     async function fetchAgentData(): Promise<void>{
         try{
             const res = await axios.get(`https://valorant-api.com/v1/agents/${player.agent.id}`);
@@ -145,7 +148,7 @@ const PlayerSlot: React.FC<Player> = ({player}) => {
                 <p>AFK: {playerData.afk_rounds} | AVG_SPENT: {playerData.avg_spent} </p>
             </div>
         </div>
-        <div className='mt-2 w-full'>
+        <div className='mt-2 mb-4 w-full'>
             <div className='flex justify-between items-center'>
                 <div className='flex'>
                     <img src={playerData.ability_icons[0]} className='h-6'/>
@@ -165,6 +168,12 @@ const PlayerSlot: React.FC<Player> = ({player}) => {
                 </div>
             </div>
         </div>
+        {
+            Object.entries(guns).map((gun, index) => (
+                <GunSlot key={index} gunVal = {gun} />
+             )
+            )
+        }
     </div>
   )
 }

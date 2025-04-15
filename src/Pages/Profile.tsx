@@ -56,7 +56,7 @@ const Profile: React.FC = () => {
             const res2 = await axios.get(`https://api.henrikdev.xyz/valorant/v3/mmr/ap/pc/${userName}/${userId}?api_key=${apiKey}`);
             const card = await axios.get(`https://media.valorant-api.com/playercards/${res1.data.data.card}/wideart.png`);
             const title = await axios.get(`https://valorant-api.com/v1/playertitles/${res1.data.data.title}`);
-            const matches = await axios.get(`https://api.henrikdev.xyz/valorant/v2/mmr-history/ap/pc/tabaahi/tabah?api_key=${apiKey}`);
+            const matches = await axios.get(`https://api.henrikdev.xyz/valorant/v2/mmr-history/ap/pc/${userName}/${userId}?api_key=${apiKey}`);
             
             setUserData({
                 name: userName,
