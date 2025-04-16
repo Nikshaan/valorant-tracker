@@ -12,6 +12,7 @@ interface User {
     title: string,
     curr_rank: string,
     peak_rank: string,
+    curr_rr: number,
 }
 
 type ValorantPlayerData = {
@@ -66,6 +67,7 @@ const Profile: React.FC = () => {
                 title: title.data.data.titleText,
                 curr_rank: res2.data.data.current.tier.name,
                 peak_rank: res2.data.data.peak.tier.name,
+                curr_rr: matches.data.data.history[0].rr,
             });
             setMatchData(matches?.data?.data?.history);
         }
@@ -102,7 +104,7 @@ const Profile: React.FC = () => {
             <p>{userData.name}#{userData.tag}</p>
             <p>level : {userData.level}</p>
             <p>title : {userData.title}</p>
-            <p>current rank : {userData.curr_rank}</p>
+            <p>current rank : {userData.curr_rank}&nbsp;({userData.curr_rr}/100)</p>
             <p>peak rank : {userData.peak_rank}</p>
         </div>
         <div className={`${netColor} border-2 border-white p-2 text-white rounded-xl font-bold`}>

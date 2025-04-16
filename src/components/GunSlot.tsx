@@ -13,7 +13,7 @@ const GunSlot: React.FC<GunProps> = ({ gunVal }) => {
         try{
             if(gunVal[0] == "Ultimate" || gunVal[0] == "Ability1" || gunVal[0] == "Ability2" || gunVal[0] == "GrenadeAbility"){
                 setGunValue(gunVal[0]);
-            } else if(gunVal[0] == ''){
+            } else if(gunVal[0] == '' || gunVal[0] == '95336ae4-45d4-1032-cfaf-6bad01910607'){
                 setGunValue("Melee");
             }
             else {
