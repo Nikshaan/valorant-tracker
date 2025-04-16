@@ -11,7 +11,8 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
+      <Route path="/" element={<Home />} />
+        <Route path="/valorant-tracker/" element={<Home />} />
         <Route path="/progressGraph" element={<ProgressGraph />} />
         <Route path="/profile/:userName/:userId" element={<Profile />} />
         <Route path="/match/:matchId" element={<MatchStats />} />
