@@ -7,7 +7,9 @@ const Navbar: React.FC = () => {
         <Link to="/">
             <p>HOME</p>
         </Link>
-        <p>GANG</p>
+        <Link to="/progressGraph">
+          <p>Progress-Graph</p>
+        </Link>
     </div>
   )
 }
