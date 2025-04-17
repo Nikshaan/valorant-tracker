@@ -9,7 +9,7 @@ export default defineConfig({
   base: "/",
   resolve: {
     alias: {
-      crypto: 'crypto-js'
+      crypto: 'crypto-browserify'
     }
   },
   define: {
