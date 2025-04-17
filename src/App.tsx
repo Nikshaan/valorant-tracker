@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom"
-import Home from "../src/pages/Home"
-import ProgressGraph from "../src/pages/ProgressGraph"
-import Profile from "../src/pages/Profile"
-import MatchStats from "../src/pages/MatchStats"
+import Home from "./pages/Home.tsx"
+import ProgressGraph from "./pages/ProgressGraph.tsx"
+import Profile from "./pages/Profile.tsx"
+import MatchStats from "./pages/MatchStats.tsx"
 
 function App() {
 
