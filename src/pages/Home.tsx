@@ -21,7 +21,7 @@ const Home : React.FC = () => {
         try{
             const res = await axios.get(`https://api.henrikdev.xyz/valorant/v2/account/${user[0]}/${user[1]}?api_key=${apiKey}`);
             if (res.data.status === 200){
-                navigate(`/valorant-tracker/profile/${user[0]}/${user[1]}`);
+                navigate(`/profile/${user[0]}/${user[1]}`);
             }
         }
         catch(err){

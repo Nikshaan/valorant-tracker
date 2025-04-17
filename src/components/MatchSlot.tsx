@@ -86,7 +86,7 @@ const MatchSlot: React.FC<MatchCardProps> = ({ matchData }) => {
 
   return (
     <div className={`bg-[#c4c8cc] w-[80%] h-fit m-auto mt-4 cursor-pointer border-4 pt-2 px-2 border-white border-b-black border-r-black`}>
-        <Link to={`/valorant-tracker/match/${match.matchId}`}>
+        <Link to={`/match/${match.matchId}`}>
             <div className="w-full bg-[#02007D] h-8 text-white flex justify-between items-center px-2">
                 <p>{match.date}</p>
                 <p>{match.map}</p>

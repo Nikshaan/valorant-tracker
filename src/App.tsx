@@ -10,10 +10,10 @@ function App() {
     <>
       <Routes>
       <Route path="/" element={<Home />} />
-        <Route path="/valorant-tracker/" element={<Home />} />
-        <Route path="/valorant-tracker/progressGraph" element={<ProgressGraph />} />
-        <Route path="/valorant-tracker/profile/:userName/:userId" element={<Profile />} />
-        <Route path="/valorant-tracker/match/:matchId" element={<MatchStats />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/progressGraph" element={<ProgressGraph />} />
+        <Route path="/profile/:userName/:userId" element={<Profile />} />
+        <Route path="/match/:matchId" element={<MatchStats />} />
       </Routes>
     </>
   )
