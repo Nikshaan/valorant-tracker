@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom"
-import Home from "./pages/Home"
-import Profile from "./pages/Profile"
-import MatchStats from "./pages/MatchStats"
-import Navbar from "./components/Navbar"
-import ProgressGraph from "./pages/ProgressGraph"
+import Navbar from "../src/components/Navbar"
+import Home from "../src/pages/Home"
+import ProgressGraph from "../src/pages/ProgressGraph"
+import Profile from "../src/pages/Profile"
+import MatchStats from "../src/pages/MatchStats"
 
 function App() {
 
@@ -13,9 +13,9 @@ function App() {
       <Routes>
       <Route path="/" element={<Home />} />
         <Route path="/valorant-tracker/" element={<Home />} />
-        <Route path="/progressGraph" element={<ProgressGraph />} />
-        <Route path="/profile/:userName/:userId" element={<Profile />} />
-        <Route path="/match/:matchId" element={<MatchStats />} />
+        <Route path="/valorant-tracker/progressGraph" element={<ProgressGraph />} />
+        <Route path="/valorant-tracker/profile/:userName/:userId" element={<Profile />} />
+        <Route path="/valorant-tracker/match/:matchId" element={<MatchStats />} />
       </Routes>
     </>
   )

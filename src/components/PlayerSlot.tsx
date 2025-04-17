@@ -134,7 +134,7 @@ const PlayerSlot: React.FC<Player> = ({player, guns}) => {
     <div className='m-1 flex-col flex p-2 border-2'>
         <div className='flex justify-between'>
             <img src={playerData.agent_icon} className='h-6'/>
-            <Link to={`/profile/${player.name}/${player.tag}`}>
+            <Link to={`/valorant-tracker/profile/${player.name}/${player.tag}`}>
                 <p className='text-nowrap'>{player.name}#{player.tag}</p>
             </Link>
             <p>lvl: {playerData.level}</p>

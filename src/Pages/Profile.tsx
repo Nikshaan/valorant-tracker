@@ -37,7 +37,7 @@ type ValorantPlayerData = {
       [key: string]: unknown;
     };
     match_id: string;
-    last_change: number;
+    mmr_change_to_last_game: number;
     ranking_in_tier: number;
     season_id: string;
     [key: string]: unknown;
@@ -57,7 +57,7 @@ const Profile: React.FC = () => {
             const res2 = await axios.get(`https://api.henrikdev.xyz/valorant/v3/mmr/ap/pc/${userName}/${userId}?api_key=${apiKey}`);
             const card = await axios.get(`https://media.valorant-api.com/playercards/${res1.data.data.card}/wideart.png`);
             const title = await axios.get(`https://valorant-api.com/v1/playertitles/${res1.data.data.title}`);
-            const matches = await axios.get(`https://api.henrikdev.xyz/valorant/v2/mmr-history/ap/pc/${userName}/${userId}?api_key=${apiKey}`);
+            const matches = await axios.get(`https://api.henrikdev.xyz/valorant/v1/mmr-history/ap/${userName}/${userId}?api_key=${apiKey}`);
             
             setUserData({
                 name: userName,
@@ -67,9 +67,9 @@ const Profile: React.FC = () => {
                 title: title.data.data.titleText,
                 curr_rank: res2.data.data.current.tier.name,
                 peak_rank: res2.data.data.peak.tier.name,
-                curr_rr: matches.data.data.history[0].rr,
+                curr_rr: matches.data.data[0].ranking_in_tier,
             });
-            setMatchData(matches?.data?.data?.history);
+            setMatchData(matches?.data?.data);
         }
         catch(err){
             console.log("Error : " + err);
@@ -78,7 +78,7 @@ const Profile: React.FC = () => {
 
     if(matchData != null && netCalc == "NET"){
         for(let i = 0; i < 5 ; i++){
-            netRR = netRR + matchData[i].last_change;
+            netRR = netRR + matchData[i].mmr_change_to_last_game;
         }
 
         if(netRR > 0){

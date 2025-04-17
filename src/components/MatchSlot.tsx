@@ -8,6 +8,7 @@ interface Match {
     map: string,
     matchId: string,
     delta: number,
+    curr_rr: number,
 }
 
 type ValorantPlayerData = {
@@ -32,7 +33,7 @@ type ValorantPlayerData = {
       [key: string]: unknown;
     };
     match_id: string;
-    last_change: number;
+    mmr_change_to_last_game: number;
     ranking_in_tier: number;
     season_id: string;
     [key: string]: unknown;
@@ -48,10 +49,11 @@ const MatchSlot: React.FC<MatchCardProps> = ({ matchData }) => {
 
     const match: Match = {
         date: matchData.date,
-        rank: matchData.tier.name,
+        rank: matchData.images.small,
         map: matchData.map.name,
         matchId: matchData.match_id,
-        delta: matchData.last_change,
+        delta: matchData.mmr_change_to_last_game,
+        curr_rr: matchData.ranking_in_tier,
     };
 
     async function fetchMap(): Promise<void>{
@@ -84,12 +86,16 @@ const MatchSlot: React.FC<MatchCardProps> = ({ matchData }) => {
 
   return (
     <div className={`${deltaColor} text-left bg-gray-500 text-white border-2 p-2 m-5 cursor-pointer`}>
-        <Link to={`/match/${match.matchId}`}>
+        <Link to={`/valorant-tracker/match/${match.matchId}`}>
             <p>Map : {match.map}</p>
             <p>Date : {match.date}</p>
             <p>Delta : {match.delta}</p>
-            <p>Rank : {match.rank}</p>
+            <img src={match.rank} className="h-5" />
             <img src={mapImg} className="border-2 border-black w-full"/>
+            <p>Current RR: {match.curr_rr}</p>
+            <div className="w-full bg-white h-2 my-2 border-2 border-black">
+                <div style={{ width: `${match.curr_rr}%` }} className="bg-blue-600 h-2" />
+            </div>
         </Link>
     </div>
   )

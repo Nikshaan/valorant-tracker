@@ -31,7 +31,7 @@ const GunSlot: React.FC<GunProps> = ({ gunVal }) => {
         }, []);
 
     if(gunImg == null && gunValue == null){
-        return <div>Loading...</div>
+        return <div className="w-full text-left ml-2 text-sm">NA x {gunVal[1]}</div>
     }
   return (
     <div className="flex mt-1 text-nowrap w-full gap-2 justify-start mx-1 items-center">
