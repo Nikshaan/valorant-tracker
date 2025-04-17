@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom"
-import Navbar from "../src/components/Navbar"
 import Home from "../src/pages/Home"
 import ProgressGraph from "../src/pages/ProgressGraph"
 import Profile from "../src/pages/Profile"
@@ -9,7 +8,6 @@ function App() {
 
   return (
     <>
-      <Navbar />
       <Routes>
       <Route path="/" element={<Home />} />
         <Route path="/valorant-tracker/" element={<Home />} />

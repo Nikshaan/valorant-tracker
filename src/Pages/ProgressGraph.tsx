@@ -10,6 +10,8 @@ import { Chart as ChartJS,
     from "chart.js";
 import { FormEvent, useState } from "react";
 import { Line } from "react-chartjs-2";
+import Navbar from "../components/Navbar";
+import logo from "../assets/logo-valo.png";
 
 ChartJS.register(
     CategoryScale,
@@ -77,7 +79,7 @@ const ProgressGraph = () => {
             {
                 label: "Player",
                 data: player,
-                borderColor: "rgb(75, 192, 192)",
+                borderColor: "#02007D",
             },
         ],
     };
@@ -148,19 +150,31 @@ const ProgressGraph = () => {
     }
     
     if(!data){
-        return <div>Loading...</div>
+        return <div className="h-[100svh] w-full flex justify-center items-center">
+        <div className="m-auto w-fit h-fit text-center flex flex-col justify-center items-center gap-2">
+            <img src={logo} className="h-32"/>
+            <p className="font-bold text-2xl">Loading...</p>
+        </div>
+        </div>
     }
     
   return (
-    <div>
-        <div className="m-auto bg-gray-400 px-2 border-2">
-            <form onSubmit={handleSubmit}>
-                <input type="text"  value={userInput} onChange={(e) => {setUserInput(e.target.value)}} className="py-1 px-4 border-2 border-black bg-gray-500" placeholder="Enter player name#id : "/>
-                <button type="submit" className="m-2 cursor-pointer border-2 border-black py-1 px-4 bg-gray-500">Search</button>
-            </form>
-            <p>{error}</p>
-      </div>
-      <Line options={options} data={data} />
+    <div className="h-[100svh] flex flex-col pb-16">
+        <Navbar />
+        <div className="m-auto w-[80%] h-[50%] flex flex-col justify-center items-center">
+          <div className="mt-10 w-full h-full border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white p-5">
+            <Line options={options} data={data} />
+          </div>
+          <div className=" m-auto w-fit my-10 bg-[#C3C7CB] px-4 py-2 justify-center items-center gap-5 border-4 border-b-black border-r-black border-t-white border-l-white">
+            <div className="bg-[#C3C7CB] text-black border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white">
+              <form onSubmit={handleSubmit}>
+                  <input type="text"  value={userInput} onChange={(e) => {setUserInput(e.target.value)}} className="py-1 px-2 placeholder-black border-2 border-black" placeholder="Enter player name#tag : "/>
+                  <button type="submit" className="bg-[#C3C7CB] px-4 py-1 border-2 border-b-black border-r-black border-t-white border-l-white text-black cursor-pointer">Search</button>
+              </form>
+              <p className={`text-center text-red-800 ${error?"flex justify-center items-center":"hidden"}`}>{error}</p>
+            </div>
+          </div>
+        </div>
     </div>
   )
 }

@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom"
 import axios from "axios";
 import { useEffect, useState } from "react";
 import MatchSlot from "../components/MatchSlot";
+import Navbar from "../components/Navbar";
+import logo from "../assets/logo-valo.png";
 const apiKey = import.meta.env.VITE_API_KEY;
 
 interface User {
@@ -82,9 +84,9 @@ const Profile: React.FC = () => {
         }
 
         if(netRR > 0){
-            setNetColor("bg-green-900");
+            setNetColor("bg-green-700");
         } else if (netRR < 0){
-            setNetColor("bg-red-900");
+            setNetColor("bg-red-700");
         }
         setNetCalc(netRR);
     }
@@ -94,23 +96,31 @@ const Profile: React.FC = () => {
     }, []);
 
     if (userData == null || matchData == null || netCalc == "NET"){
-        return (<div className="text-white">Loading...</div>)
+        return (<div className="h-[100svh] w-full flex justify-center items-center">
+            <div className="m-auto w-fit h-fit text-center flex flex-col justify-center items-center gap-2">
+                <img src={logo} className="h-32"/>
+                <p className="font-bold text-2xl">Loading...</p>
+            </div>
+            </div>)
     }
     
     return (
-    <div className="p-5">
-        <img src={userData.card} className="w-full"/>
-        <div className="text-white m-2 font-semibold">
-            <p>{userData.name}#{userData.tag}</p>
-            <p>level : {userData.level}</p>
-            <p>title : {userData.title}</p>
-            <p>current rank : {userData.curr_rank}&nbsp;({userData.curr_rr}/100)</p>
-            <p>peak rank : {userData.peak_rank}</p>
+    <div className="min-h-[100svh] pb-12">
+        <Navbar />
+        <div className="w-[80%] relative m-auto mt-8 border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white">
+            <img src={userData.card} className="w-full"/>
+            <div className="absolute bg-black w-full h-full top-0 opacity-50" />
+            <p className="absolute right-3 bottom-3 text-white text-4xl font-semibold">{userData.name}#{userData.tag}</p>
+            <p className="text-nowrap absolute top-0 left-1 text-white font-medium">{userData.title}</p>
         </div>
-        <div className={`${netColor} border-2 border-white p-2 text-white rounded-xl font-bold`}>
-            <p>Net RR since past 5 matches : {netCalc}</p>
+        <div className="font-semibold overflow-auto p-1 w-[80%] m-auto gap-2 flex justify-around text-black border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white">
+            <p className="text-nowrap"><span className="font-bold">Level</span> : {userData.level}</p>
+            <p className="text-nowrap"><span className="font-bold">Current-rank</span> : {userData.curr_rank}</p>
+            <p className="text-nowrap"><span className="font-bold">Peak-rank</span> : {userData.peak_rank}</p>
         </div>
-        <div className="w-full h-1 bg-white my-5" />  
+        <div className={`w-[80%] mb-8 m-auto mt-2 flex justify-end items-center text-white font-medium text-sm`}>
+            <p className={`${netColor} px-5 py-1 text-center border-4 border-[#848584] border-b-white border-r-white`}>Net RR since past 5 matches : {netCalc}</p>
+        </div>
         {
             matchData.map((match) => (
                 <MatchSlot key={match.match_id} matchData = {match}/>

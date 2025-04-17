@@ -31,14 +31,14 @@ const GunSlot: React.FC<GunProps> = ({ gunVal }) => {
         }, []);
 
     if(gunImg == null && gunValue == null){
-        return <div className="w-full text-left ml-2 text-sm">NA x {gunVal[1]}</div>
+        return <div className="w-full text-sm h-7 text-center border-white border-b-black border-r-black border-2">NA x {gunVal[1]}</div>
     }
   return (
-    <div className="flex mt-1 text-nowrap w-full gap-2 justify-start mx-1 items-center">
+    <div className="flex w-full gap-2 justify-center mx-1 items-center border-white border-b-black border-r-black border-2">
         <div className="flex justify-center items-center">
             {
                 gunImg
-                ?<img src = {gunImg ? gunImg : "#"} className="h-5" />
+                ?<img src = {gunImg ? gunImg : "#"} className="h-5 w-full" />
                 :<p className="">{gunValue ? gunValue : ""}</p>
             }
             

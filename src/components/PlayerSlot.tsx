@@ -131,49 +131,51 @@ const PlayerSlot: React.FC<Player> = ({player, guns}) => {
     }
 
   return (
-    <div className='m-1 flex-col flex p-2 border-2'>
-        <div className='flex justify-between'>
-            <img src={playerData.agent_icon} className='h-6'/>
+    <div className='m-1 flex-col flex p-2 border-2 border-t-[#848584] border-l-[#848584] border-b-white border-r-white bg-[#c4c8cc]'>
+        <div className='flex pr-2 font-semibold justify-between items-center border-2 border-t-[#848584] border-l-[#848584] border-b-white border-r-white'>
+            <img src={playerData.agent_icon} className='h-10 border-4 border-white border-b-black border-r-black'/>
             <Link to={`/valorant-tracker/profile/${player.name}/${player.tag}`}>
                 <p className='text-nowrap'>{player.name}#{player.tag}</p>
             </Link>
-            <p>lvl: {playerData.level}</p>
-            <p>score: {playerData.stats.score}</p>
-            <p>rank: {playerData.rank}</p>
+            <p>Lvl: {playerData.level}</p>
+            <p>Score: {playerData.stats.score}</p>
+            <p>Rank: {playerData.rank}</p>
         </div>
-        <div className='flex mt-2'>
-            <div className='flex gap-5'>
+        <div className='flex mt-2 w-full'>
+            <div className='flex gap-5 w-fit border-4 p-1 px-2 border-t-[#848584] border-l-[#848584] border-b-white border-r-white'>
                 <p>KDA: {playerData.stats.kills}|{playerData.stats.deaths}|{playerData.stats.assists}</p>
                 <p>HBL: {playerData.stats.headshots} | {playerData.stats.bodyshots} | {playerData.stats.legshots}</p>
                 <p>AFK: {playerData.afk_rounds} | AVG_SPENT: {playerData.avg_spent} </p>
             </div>
         </div>
-        <div className='mt-2 mb-4 w-full'>
-            <div className='flex justify-between items-center'>
+        <div className='flex mt-2 w-full'>
+            <div className='flex gap-5 w-fit border-4 p-1 px-2 border-t-[#848584] border-l-[#848584] border-b-white border-r-white bg-gray-400 text-white'>
                 <div className='flex'>
                     <img src={playerData.ability_icons[0]} className='h-6'/>
-                    <p> X {playerData.abilities.ability1}</p>
+                    <p>&nbsp; X {playerData.abilities.ability1}</p>
                 </div>
                 <div className='flex'>
                     <img src={playerData.ability_icons[1]} className='h-6'/>
-                    <p> X {playerData.abilities.ability2}</p>
+                    <p>&nbsp; X {playerData.abilities.ability2}</p>
                 </div>
                 <div className='flex'>
                     <img src={playerData.ability_icons[2]} className='h-6'/>
-                    <p> X {playerData.abilities.grenade}</p>
+                    <p>&nbsp; X {playerData.abilities.grenade}</p>
                 </div>
                 <div className='flex'>
                     <img src={playerData.ability_icons[3]} className='h-6'/>
-                    <p> X {playerData.abilities.ultimate}</p>
+                    <p>&nbsp; X {playerData.abilities.ultimate}</p>
                 </div>
             </div>
         </div>
-        {
-            Object.entries(guns).map((gun, index) => (
-                <GunSlot key={index} gunVal = {gun} />
-             )
-            )
-        }
+        <div className='w-fit -ml-1 grid grid-cols-3 my-2 justify-center items-center'>
+            {
+                Object.entries(guns).map((gun, index) => (
+                    <GunSlot key={index} gunVal = {gun} />
+                )
+                )
+            }
+        </div>
     </div>
   )
 }

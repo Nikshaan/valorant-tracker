@@ -72,9 +72,9 @@ const MatchSlot: React.FC<MatchCardProps> = ({ matchData }) => {
 
     if(matchData != null && deltaColor == "None"){
         if(match.delta > 0){
-            setDeltaColor("bg-green-900");
+            setDeltaColor("bg-green-700");
         } else if (match.delta < 0){
-            setDeltaColor("bg-red-900");
+            setDeltaColor("bg-red-700");
         } else {
             setDeltaColor("bg-gray-500")
         }
@@ -85,16 +85,26 @@ const MatchSlot: React.FC<MatchCardProps> = ({ matchData }) => {
     }
 
   return (
-    <div className={`${deltaColor} text-left bg-gray-500 text-white border-2 p-2 m-5 cursor-pointer`}>
+    <div className={`bg-[#c4c8cc] w-[80%] h-fit m-auto mt-4 cursor-pointer border-4 pt-2 px-2 border-white border-b-black border-r-black`}>
         <Link to={`/valorant-tracker/match/${match.matchId}`}>
-            <p>Map : {match.map}</p>
-            <p>Date : {match.date}</p>
-            <p>Delta : {match.delta}</p>
-            <img src={match.rank} className="h-5" />
-            <img src={mapImg} className="border-2 border-black w-full"/>
-            <p>Current RR: {match.curr_rr}</p>
-            <div className="w-full bg-white h-2 my-2 border-2 border-black">
-                <div style={{ width: `${match.curr_rr}%` }} className="bg-blue-600 h-2" />
+            <div className="w-full bg-[#02007D] h-8 text-white flex justify-between items-center px-2">
+                <p>{match.date}</p>
+                <p>{match.map}</p>
+            </div>
+            <div className="w-full bg-black h-40 my-2 relative">
+                <img src={mapImg}  className="w-full h-full"/>
+                <div className="absolute top-0 w-full h-full bg-black opacity-50" />
+                <div className="absolute top-0 w-full h-full text-white">
+                    <div className={`${deltaColor} m-0.5 absolute right-0 p-0.5 px-1 text-center border-2 border-b-black border-r-black border-t-white border-l-white`}>
+                        <p className="">RR change : {match.delta}</p>
+                    </div>
+                    <img src={match.rank} className="h-8 m-1 left-0" />
+                    <div className="w-full bottom-0 absolute bg-white h-5 border-t-black border-2 border-l-black border-b-white overflow-hidden border-r-white">
+                        <div style={{ width: `${match.curr_rr}%` }} className={`flex ${deltaColor} h-4 justify-center items-center`}>
+                            <p className="text-sm px-1">{match.curr_rr}</p>    
+                        </div>
+                    </div>
+                </div>
             </div>
         </Link>
     </div>
