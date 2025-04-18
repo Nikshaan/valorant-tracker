@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import logo from "../assets/logo-valo.png";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import yoru from "../assets/yoru.jpg";
 const apiKey = import.meta.env.VITE_API_KEY;
 
 const Home : React.FC = () => {
@@ -34,7 +35,8 @@ const Home : React.FC = () => {
   return (
     <div className="text-white h-[100svh] bg-[#C3C7CB] relative flex flex-col items-center pb-16">
       <Navbar />
-      <div style={{backgroundImage: `url("/src/assets/yoru.jpg")`}} className="m-auto relative  overflow-hidden border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white bg-cover bg-center flex flex-col justify-center items-center gap-5 bg-no-repeat w-[90%] lg:h-[80%] h-[50%] xl:w-[70%]">
+      <div className="m-auto relative  overflow-hidden border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white bg-cover bg-center flex flex-col justify-center items-center gap-5 bg-no-repeat w-[90%] lg:h-[80%] h-[50%] xl:w-[70%]">
+        <LazyLoadImage alt="background" loading="lazy" src={yoru} className="min-h-[100%] min-w-[100%] w-auto h-auto"/>
         <div className="flex absolute flex-col bg-[#C3C7CB] p-10 px-20 justify-center items-center gap-5 border-4 border-b-black border-r-black border-t-white border-l-white">
           <LazyLoadImage alt="logo" src={logo} className="h-20"/>
           <div className="bg-[#C3C7CB] text-black border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white flex flex-col">
