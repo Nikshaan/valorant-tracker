@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Link } from "react-router-dom";
 
 interface Match {
@@ -81,27 +82,27 @@ const MatchSlot: React.FC<MatchCardProps> = ({ matchData }) => {
     }
 
     if (mapImg == null || deltaColor == "None"){
-        return (<div className="text-white">Loading...</div>)
+        return (<div className="font-silkscreen m-auto text-center my-2">Loading Match...</div>)
     }
 
   return (
-    <div className={`bg-[#c4c8cc] w-[80%] h-fit m-auto mt-4 cursor-pointer border-4 pt-2 px-2 border-white border-b-black border-r-black`}>
+    <div className={`bg-[#c4c8cc] w-[95%] sm:w-[80%] 2xl:w-[40%] xl:w-[55%] lg:w-[65%] h-fit m-auto mt-4 cursor-pointer border-4 pt-2 px-2 border-white border-b-black border-r-black`}>
         <Link to={`/match/${match.matchId}`}>
-            <div className="w-full bg-[#02007D] h-8 text-white flex justify-between items-center px-2">
+            <div className="w-full bg-[#02007D] font-silkscreen text-sm h-10 text-white gap-5 flex justify-between items-center px-2">
                 <p>{match.date}</p>
                 <p>{match.map}</p>
             </div>
             <div className="w-full bg-black h-40 my-2 relative">
-                <img src={mapImg}  className="w-full h-full"/>
+                <LazyLoadImage alt="mapImage" loading="lazy" src={mapImg}  className="w-full h-full"/>
                 <div className="absolute top-0 w-full h-full bg-black opacity-50" />
                 <div className="absolute top-0 w-full h-full text-white">
-                    <div className={`${deltaColor} m-0.5 absolute right-0 p-0.5 px-1 text-center border-2 border-b-black border-r-black border-t-white border-l-white`}>
+                    <div className={`${deltaColor} font-silkscreen text-sm m-0.5 absolute right-0 p-0.5 px-1 text-center border-2 border-b-black border-r-black border-t-white border-l-white`}>
                         <p className="">RR change : {match.delta}</p>
                     </div>
-                    <img src={match.rank} className="h-8 m-1 left-0" />
+                    <LazyLoadImage alt="rankIcon" loading="lazy" src={match.rank} className="h-8 m-1 left-0" />
                     <div className="w-full bottom-0 absolute bg-white h-5 border-t-black border-2 border-l-black border-b-white overflow-hidden border-r-white">
                         <div style={{ width: `${match.curr_rr}%` }} className={`flex ${deltaColor} h-4 justify-center items-center`}>
-                            <p className="text-sm px-1">{match.curr_rr}</p>    
+                            <p className="text-sm px-1 font-silkscreen">{match.curr_rr}</p>    
                         </div>
                     </div>
                 </div>

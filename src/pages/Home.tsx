@@ -3,8 +3,7 @@ import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import logo from "../assets/logo-valo.png";
-import yoru from "../assets/yoru.jpg";
-
+import { LazyLoadImage } from "react-lazy-load-image-component";
 const apiKey = import.meta.env.VITE_API_KEY;
 
 const Home : React.FC = () => {
@@ -35,14 +34,13 @@ const Home : React.FC = () => {
   return (
     <div className="text-white h-[100svh] bg-[#C3C7CB] relative flex flex-col items-center pb-16">
       <Navbar />
-      <div className="m-auto relative overflow-hidden border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white bg-cover bg-center flex flex-col justify-center items-center gap-5 bg-no-repeat w-[80%] h-[50%]">
-        <img src={yoru} />
+      <div style={{backgroundImage: `url("/src/assets/yoru.jpg")`}} className="m-auto relative  overflow-hidden border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white bg-cover bg-center flex flex-col justify-center items-center gap-5 bg-no-repeat w-[90%] lg:h-[80%] h-[50%] xl:w-[70%]">
         <div className="flex absolute flex-col bg-[#C3C7CB] p-10 px-20 justify-center items-center gap-5 border-4 border-b-black border-r-black border-t-white border-l-white">
-          <img src={logo} className="h-20"/>
+          <LazyLoadImage alt="logo" src={logo} className="h-20"/>
           <div className="bg-[#C3C7CB] text-black border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white flex flex-col">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="flex m-1 font-raleway">
                 <input type="text"  value={userInput} onChange={(e) => {setUserInput(e.target.value)}} className="py-1 px-2 placeholder-black border-2 w-fit" placeholder="Enter player name#tag : "/>
-                <button type="submit" className="bg-[#C3C7CB] px-4 py-1 border-2 border-b-black border-r-black border-t-white border-l-white text-black cursor-pointer">Search</button>
+                <button type="submit" className="bg-[#C3C7CB] font-silkscreen px-4 py-1 border-2 border-b-black border-r-black border-t-white border-l-white text-black cursor-pointer">Search</button>
             </form>
             <p className={`text-center text-red-800 ${error?"flex justify-center items-center":"hidden"}`}>{error}</p>
           </div>

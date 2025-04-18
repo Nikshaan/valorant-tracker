@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import MatchSlot from "../components/MatchSlot";
 import Navbar from "../components/Navbar";
 import logo from "../assets/logo-valo.png";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 const apiKey = import.meta.env.VITE_API_KEY;
 
 interface User {
@@ -98,8 +99,8 @@ const Profile: React.FC = () => {
     if (userData == null || matchData == null || netCalc == "NET"){
         return (<div className="h-[100svh] w-full flex justify-center items-center">
             <div className="m-auto w-fit h-fit text-center flex flex-col justify-center items-center gap-2">
-                <img src={logo} className="h-32"/>
-                <p className="font-bold text-2xl">Loading...</p>
+                <LazyLoadImage alt="loader" loading="lazy" src={logo} className="h-32"/>
+                <p className="font-bold text-2xl font-silkscreen">Loading...</p>
             </div>
             </div>)
     }
@@ -107,18 +108,18 @@ const Profile: React.FC = () => {
     return (
     <div className="min-h-[100svh] pb-12">
         <Navbar />
-        <div className="w-[80%] relative m-auto mt-8 border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white">
-            <img src={userData.card} className="w-full"/>
+        <div className="w-[95%] sm:w-[80%] lg:w-[65%] xl:w-[55%] 2xl:w-[40%] font-raleway text-sm relative m-auto mt-8 border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white">
+            <LazyLoadImage alt="PlayerCard" loading="lazy" src={userData.card} className="w-full"/>
             <div className="absolute bg-black w-full h-full top-0 opacity-50" />
-            <p className="absolute right-3 bottom-3 text-white text-4xl font-semibold">{userData.name}#{userData.tag}</p>
-            <p className="text-nowrap absolute top-0 left-1 text-white font-medium">{userData.title}</p>
+            <p className="absolute right-3 bottom-3 text-white text-2xl font-semibold">{userData.name}#{userData.tag}</p>
+            <p className="text-nowrap absolute top-3 left-3 text-white font-medium">{userData.title}</p>
         </div>
-        <div className="font-semibold overflow-auto p-1 w-[80%] m-auto gap-2 flex justify-around text-black border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white">
+        <div className="font-thin text-sm font-silkscreen overflow-auto p-1 xl:w-[55%] w-[95%] sm:w-[80%] lg:w-[65%] 2xl:w-[40%] m-auto gap-2 flex justify-around text-black border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white">
             <p className="text-nowrap"><span className="font-bold">Level</span> : {userData.level}</p>
             <p className="text-nowrap"><span className="font-bold">Current-rank</span> : {userData.curr_rank}</p>
             <p className="text-nowrap"><span className="font-bold">Peak-rank</span> : {userData.peak_rank}</p>
         </div>
-        <div className={`w-[80%] mb-8 m-auto mt-2 flex justify-end items-center text-white font-medium text-sm`}>
+        <div className={`w-[95%] sm:w-[80%] lg:w-[65%] xl:w-[55%] 2xl:w-[40%] font-raleway mb-8 m-auto mt-2 flex justify-end items-center text-white font-medium text-sm`}>
             <p className={`${netColor} px-5 py-1 text-center border-4 border-[#848584] border-b-white border-r-white`}>Net RR since past 5 matches : {netCalc}</p>
         </div>
         {

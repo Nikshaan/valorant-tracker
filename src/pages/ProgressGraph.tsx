@@ -12,6 +12,7 @@ import { FormEvent, useState } from "react";
 import { Line } from "react-chartjs-2";
 import Navbar from "../components/Navbar";
 import logo from "../assets/logo-valo.png";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 ChartJS.register(
     CategoryScale,
@@ -100,7 +101,9 @@ const ProgressGraph = () => {
       }
 
     const options: object = {
+        type: 'line',
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           title: {
             display: true,
@@ -152,8 +155,8 @@ const ProgressGraph = () => {
     if(!data){
         return <div className="h-[100svh] w-full flex justify-center items-center">
         <div className="m-auto w-fit h-fit text-center flex flex-col justify-center items-center gap-2">
-            <img src={logo} className="h-32"/>
-            <p className="font-bold text-2xl">Loading...</p>
+            <LazyLoadImage alt="loader" loading="lazy" src={logo} className="h-32"/>
+            <p className="font-bold text-2xl font-silkscreen">Loading...</p>
         </div>
         </div>
     }
@@ -161,15 +164,15 @@ const ProgressGraph = () => {
   return (
     <div className="h-[100svh] flex flex-col pb-16">
         <Navbar />
-        <div className="m-auto w-[80%] h-[50%] flex flex-col justify-center items-center">
-          <div className="mt-10 w-full h-full border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white p-5">
+        <div className="m-auto mt-1 w-[98%] lg:w-[85%] h-[90svh] flex flex-col justify-center items-center">
+          <div className="h-[70%] lg:h-[100%] lg:mt-10 w-full border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white p-5">
             <Line options={options} data={data} />
           </div>
-          <div className=" m-auto w-fit my-10 bg-[#C3C7CB] px-4 py-2 justify-center items-center gap-5 border-4 border-b-black border-r-black border-t-white border-l-white">
+          <div className="w-fit mt-2 bg-[#C3C7CB] py-2 justify-center items-center border-4 border-b-black border-r-black border-t-white border-l-white">
             <div className="bg-[#C3C7CB] text-black border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} className="flex font-raleway m-1 justify-center items-center">
                   <input type="text"  value={userInput} onChange={(e) => {setUserInput(e.target.value)}} className="py-1 px-2 placeholder-black border-2 border-black" placeholder="Enter player name#tag : "/>
-                  <button type="submit" className="bg-[#C3C7CB] px-4 py-1 border-2 border-b-black border-r-black border-t-white border-l-white text-black cursor-pointer">Search</button>
+                  <button type="submit" className="bg-[#C3C7CB] font-silkscreen px-3 py-1 border-2 border-b-black border-r-black border-t-white border-l-white text-black cursor-pointer">Search</button>
               </form>
               <p className={`text-center text-red-800 ${error?"flex justify-center items-center":"hidden"}`}>{error}</p>
             </div>

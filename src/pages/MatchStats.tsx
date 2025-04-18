@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import PlayerSlot from '../components/PlayerSlot';
 import Navbar from '../components/Navbar';
 import logo from "../assets/logo-valo.png";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 const apiKey = import.meta.env.VITE_API_KEY;
 
 interface MatchDetails {
@@ -341,8 +342,8 @@ const MatchStats: React.FC = () => {
     if(matchDetails == null || baiterBlue == null || baiterRed == null || gunCheck == null){
         return(<div className="h-[100svh] w-full flex justify-center items-center">
             <div className="m-auto w-fit h-fit text-center flex flex-col justify-center items-center gap-2">
-                <img src={logo} className="h-32"/>
-                <p className="font-bold text-2xl">Loading...</p>
+                <LazyLoadImage alt="loader" loading="lazy" src={logo} className="h-32"/>
+                <p className="font-bold text-2xl font-silkscreen">Loading...</p>
             </div>
             </div>)
     }
@@ -350,7 +351,7 @@ const MatchStats: React.FC = () => {
     return (
     <div className='min-h-[100svh] pb-8'>
         <Navbar />
-        <div className='flex p-1 mt-4 bg-[#c4c8cc] justify-center items-center'>
+        <div className='flex p-1 mt-4 bg-[#c4c8cc] justify-center items-center font-silkscreen'>
             <div className={`${matchDetails.score[0].team_id == "Red" ? "bg-red-600" : "bg-blue-600"} px-2 text-lg border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white flex justify-center items-center text-white`}>
                 {matchDetails.score[0].rounds.won}
             </div>
@@ -359,12 +360,12 @@ const MatchStats: React.FC = () => {
                 { matchDetails.score[0].rounds.lost}
             </div>
         </div>
-        <div className='text-white w-fit m-auto my-2 flex border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white justify-center items-center mb-8 gap-2'>
+        <div className='text-white w-fit font-raleway text-center m-auto my-2 flex border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white justify-center items-center mb-8 gap-2'>
             <p className='border-2 px-2 py-1 text-red-700'>Heavy Baiter Red : {baiterRed}</p>
             <p className='border-2 px-2 py-1 text-blue-700'>Heavy Baiter Blue : {baiterBlue}</p>
         </div>
         <div className='flex flex-col gap-8'>
-            <div className='bg-red-600 w-[80%] m-auto border-4 border-white border-b-black border-r-black'>
+            <div className='bg-red-600 w-[95%] sm:w-[80%] xl:w-[55%] 2xl:w-[40%] lg:w-[65%] m-auto border-4 border-white border-b-black border-r-black'>
                 {
                 playersRed.map((player, index)=>
                 (
@@ -372,7 +373,7 @@ const MatchStats: React.FC = () => {
                 ))
                 }
             </div>
-            <div className='bg-blue-600 w-[80%] m-auto border-4 border-white border-b-black border-r-black'>
+            <div className='bg-blue-600 w-[95%] xl:w-[55%] sm:w-[80%] 2xl:w-[40%] lg:w-[65%] m-auto border-4 border-white border-b-black border-r-black'>
                 {
                     playersBlue.map((player, index)=>
                     (
@@ -382,7 +383,7 @@ const MatchStats: React.FC = () => {
             </div>
         </div>
         <div>
-            <div className='flex w-[80%] mt-8 m-auto overflow-auto border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white'>
+            <div className='flex w-[95%] xl:w-[55%] sm:w-[80%] lg:w-[65%] 2xl:w-[40%] font-silkscreen text-sm mt-8 m-auto overflow-auto border-4 border-t-[#848584] border-l-[#848584] border-b-white border-r-white'>
                 {
                     matchDetails.rounds.map((round)=>
                     <div key={round.id} className={`flex border-white border-b-black border-r-black text-gray-200 flex-col justify-center items-center text-center m-1 px-2 border-2 ${round.winning_team == "Red" ? "bg-red-600": "bg-blue-600"}`}>

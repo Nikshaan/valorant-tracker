@@ -1,5 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Silkscreen:wght@400;700&display=swap');
 @import "tailwindcss";
+
+@theme {
+    --font-raleway: "Raleway", sans-serif;
+    --font-silkscreen: "Silkscreen", sans-serif;
+}
 
 body, html {
     background-color: #c4c8cc;
+    min-width: 375px;
 }

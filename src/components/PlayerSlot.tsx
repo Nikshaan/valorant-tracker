@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import GunSlot from './GunSlot';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 interface Player {
     player: PlayerGameData,
@@ -127,54 +128,57 @@ const PlayerSlot: React.FC<Player> = ({player, guns}) => {
     }, []);
 
     if (playerData == null){
-        return (<div className="text-white">Loading...</div>)
+        return (<div className="text-white font-silkscreen text-center my-2">Loading player...</div>)
     }
 
   return (
     <div className='m-1 flex-col flex p-2 border-2 border-t-[#848584] border-l-[#848584] border-b-white border-r-white bg-[#c4c8cc]'>
-        <div className='flex pr-2 font-semibold justify-between items-center border-2 border-t-[#848584] border-l-[#848584] border-b-white border-r-white'>
-            <img src={playerData.agent_icon} className='h-10 border-4 border-white border-b-black border-r-black'/>
+        <div className='flex text-sm lg:text-base font-raleway gap-2 p-2 pr-2 font-semibold justify-around overflow-auto items-center border-2 border-t-[#848584] border-l-[#848584] border-b-white border-r-white'>
+            <LazyLoadImage alt="agent" loading="lazy" src={playerData.agent_icon} className='h-10 border-4 border-white border-b-black border-r-black'/>
             <Link to={`/profile/${player.name}/${player.tag}`}>
-                <p className='text-nowrap'>{player.name}#{player.tag}</p>
+                <p className='text-nowrap font-extrabold'>{player.name}#{player.tag}</p>
             </Link>
-            <p>Lvl: {playerData.level}</p>
-            <p>Score: {playerData.stats.score}</p>
-            <p>Rank: {playerData.rank}</p>
+            <p><span className='font-bold'>Lvl: </span>{playerData.level}</p>
+            <p><span className='font-bold'>Score: </span>{playerData.stats.score}</p>
+            <p><span className='font-bold'>Rank: </span>{playerData.rank}</p>
         </div>
-        <div className='flex mt-2 w-full'>
-            <div className='flex gap-5 w-fit border-4 p-1 px-2 border-t-[#848584] border-l-[#848584] border-b-white border-r-white'>
-                <p>KDA: {playerData.stats.kills}|{playerData.stats.deaths}|{playerData.stats.assists}</p>
-                <p>HBL: {playerData.stats.headshots} | {playerData.stats.bodyshots} | {playerData.stats.legshots}</p>
-                <p>AFK: {playerData.afk_rounds} | AVG_SPENT: {playerData.avg_spent} </p>
+        <div className='flex mt-2 w-full justify-center items-center'>
+            <div className='flex text-sm lg:text-base font-silkscreen overflow-auto justify-around items-center gap-5 w-full border-4 p-1 px-2 border-t-[#848584] border-l-[#848584] border-b-white border-r-white'>
+                <div className='flex flex-col text-center'><p>KDA:</p><p>{playerData.stats.kills}|{playerData.stats.deaths}|{playerData.stats.assists}</p></div>
+                <div className='flex flex-col text-center'><p>HBL:</p><p className='text-nowrap'>{playerData.stats.headshots} | {playerData.stats.bodyshots} | {playerData.stats.legshots}</p></div>
+                <p className='text-center'>AFK: {playerData.afk_rounds}</p>
+                <p className='text-center'>AVG_SPENT: {playerData.avg_spent} </p>
             </div>
         </div>
-        <div className='flex mt-2 w-full'>
-            <div className='flex gap-5 w-fit border-4 p-1 px-2 border-t-[#848584] border-l-[#848584] border-b-white border-r-white bg-gray-400 text-white'>
-                <div className='flex'>
-                    <img src={playerData.ability_icons[0]} className='h-6'/>
+        <div className='flex mt-2 w-full font-silkscreen text-sm text-nowrap justify-center items-center'>
+            <div className='flex justify-around gap-10 overflow-auto w-full lg:text-base border-4 p-1 px-2 border-t-[#848584] border-l-[#848584] border-b-white border-r-white bg-gray-400 text-white'>
+                <div className='flex text-nowrap'>
+                    <LazyLoadImage alt="ability1" loading="lazy" src={playerData.ability_icons[0]} className='h-6'/>
                     <p>&nbsp; X {playerData.abilities.ability1}</p>
                 </div>
                 <div className='flex'>
-                    <img src={playerData.ability_icons[1]} className='h-6'/>
+                    <LazyLoadImage alt="ability2" loading="lazy" src={playerData.ability_icons[1]} className='h-6'/>
                     <p>&nbsp; X {playerData.abilities.ability2}</p>
                 </div>
                 <div className='flex'>
-                    <img src={playerData.ability_icons[2]} className='h-6'/>
+                    <LazyLoadImage alt="ability3" loading="lazy" src={playerData.ability_icons[2]} className='h-6'/>
                     <p>&nbsp; X {playerData.abilities.grenade}</p>
                 </div>
                 <div className='flex'>
-                    <img src={playerData.ability_icons[3]} className='h-6'/>
+                    <LazyLoadImage alt="ultimate" loading="lazy" src={playerData.ability_icons[3]} className='h-6'/>
                     <p>&nbsp; X {playerData.abilities.ultimate}</p>
                 </div>
             </div>
         </div>
-        <div className='w-fit -ml-1 grid grid-cols-3 my-2 justify-center items-center'>
+        <div className='flex  justify-center items-center'>
+        <div className='w-fit -ml-1 grid grid-cols-2 sm:grid-cols-4 font-silkscreen my-2 justify-center items-center'>
             {
                 Object.entries(guns).map((gun, index) => (
                     <GunSlot key={index} gunVal = {gun} />
                 )
                 )
             }
+        </div>
         </div>
     </div>
   )

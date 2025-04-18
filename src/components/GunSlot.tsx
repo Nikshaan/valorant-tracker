@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react"
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 interface GunProps {
     gunVal: string | number[]
@@ -35,10 +36,10 @@ const GunSlot: React.FC<GunProps> = ({ gunVal }) => {
     }
   return (
     <div className="flex w-full gap-2 justify-center mx-1 items-center border-white border-b-black border-r-black border-2">
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center text-sm overflow-auto">
             {
                 gunImg
-                ?<img src = {gunImg ? gunImg : "#"} className="h-5 w-full" />
+                ?<LazyLoadImage alt="gun" loading="lazy" src = {gunImg ? gunImg : "#"} className="h-5 w-full" />
                 :<p className="">{gunValue ? gunValue : ""}</p>
             }
             
